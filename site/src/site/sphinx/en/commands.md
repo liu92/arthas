@@ -6,6 +6,9 @@ All Commands
 * [jvm](jvm.md)
 * [sysprop](sysprop.md)
 * [sysenv](sysenv.md)
+* [vmoption](vmoption.md)
+* [perfcounter](perfcounter.md)
+* [logger](logger.md)
 * [mbean](mbean.md)
 * [getstatic](getstatic.md)
 
@@ -14,6 +17,7 @@ All Commands
 * [sc](sc.md)
 * [sm](sm.md)
 * [dump](dump.md)
+* [heapdump](heapdump.md)
 
 * [jad](jad.md)
 * [classloader](classloader.md)
@@ -26,7 +30,11 @@ All Commands
 * [stack](stack.md)
 * [tt](tt.md)
 
+* [profiler](profiler.md)
+
 * [cat](cat.md)
+* [grep](grep.md)
+* [tee](tee.md)
 * [pwd](pwd.md)
 * [options](options.md)
 
@@ -40,7 +48,7 @@ All Commands
 * version - print out Arthas's version
 * history - view command history
 * quit - exit the current Arthas client without affecting other clients
-* shutdown - terminate the Arthas server, all the Arthas clients connecting to this server will be disconnected
+* stop - terminate the Arthas server, all the Arthas clients connecting to this server will be disconnected
 * [keymap](keymap.md) - list all Arthas keyboard shortcuts and shortcut customizations.
 
 

@@ -1,8 +1,8 @@
 package com.taobao.arthas.core.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,7 +57,9 @@ public class Decompiler {
         }
 
         CfrDriver driver = new CfrDriver.Builder().withOptions(options).withOutputSink(mySink).build();
-        driver.analyse(Collections.singletonList(classFilePath));
+        List<String> toAnalyse = new ArrayList<String>();
+        toAnalyse.add(classFilePath);
+        driver.analyse(toAnalyse);
 
         return result.toString();
     }

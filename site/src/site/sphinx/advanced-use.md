@@ -6,6 +6,8 @@
 
 * help——查看命令帮助信息
 * [cat](cat.md)——打印文件内容，和linux里的cat命令类似
+* [grep](grep.md)——匹配查找，和linux里的grep命令类似
+* [tee](tee.md)——复制标准输入到标准输出和指定的文件，和linux里的tee命令类似
 * [pwd](pwd.md)——返回当前的工作目录，和linux命令类似
 * cls——清空当前屏幕区域
 * session——查看当前会话的信息
@@ -13,7 +15,7 @@
 * version——输出当前目标 Java 进程所加载的 Arthas 版本号
 * history——打印命令历史
 * quit——退出当前 Arthas 客户端，其他 Arthas 客户端不受影响
-* shutdown——关闭 Arthas 服务端，所有 Arthas 客户端全部退出
+* stop——关闭 Arthas 服务端，所有 Arthas 客户端全部退出
 * [keymap](keymap.md)——Arthas快捷键列表及自定义快捷键
 
 ## jvm相关
@@ -24,9 +26,13 @@
 * [jvm](jvm.md)——查看当前 JVM 的信息
 * [sysprop](sysprop.md)——查看和修改JVM的系统属性
 * [sysenv](sysenv.md)——查看JVM的环境变量
+* [vmoption](vmoption.md)——查看和修改JVM里诊断相关的option
+* [perfcounter](perfcounter.md)——查看当前 JVM 的Perf Counter信息
+* [logger](logger.md)——查看和修改logger
 * [getstatic](getstatic.md)——查看类的静态属性
-* **New!** [ognl](ognl.md)——执行ognl表达式
-* **New!** [mbean](mbean.md)——查看 Mbean 的信息
+* [ognl](ognl.md)——执行ognl表达式
+* [mbean](mbean.md)——查看 Mbean 的信息
+* [heapdump](heapdump.md)——dump java heap, 类似jmap命令的heap dump功能
 
 ## class/classloader相关
 
@@ -42,13 +48,18 @@
 ## monitor/watch/trace相关
 
 
-> 请注意，这些命令，都通过字节码增强技术来实现的，会在指定类的方法中插入一些切面来实现数据统计和观测，因此在线上、预发使用时，请尽量明确需要观测的类、方法以及条件，诊断结束要执行 `shutdown` 或将增强过的类执行 `reset` 命令。
+> 请注意，这些命令，都通过字节码增强技术来实现的，会在指定类的方法中插入一些切面来实现数据统计和观测，因此在线上、预发使用时，请尽量明确需要观测的类、方法以及条件，诊断结束要执行 `stop` 或将增强过的类执行 `reset` 命令。
 
 * [monitor](monitor.md)——方法执行监控
 * [watch](watch.md)——方法执行数据观测
 * [trace](trace.md)——方法内部调用路径，并输出方法路径上的每个节点上耗时
 * [stack](stack.md)——输出当前方法被调用的调用路径
 * [tt](tt.md)——方法执行数据的时空隧道，记录下指定方法每次调用的入参和返回信息，并能对这些不同的时间下调用进行观测
+
+
+## profiler/火焰图
+
+* [profiler](profiler.md)--使用[async-profiler](https://github.com/jvm-profiling-tools/async-profiler)对应用采样，生成火焰图
 
 ## options
 
@@ -78,6 +89,17 @@ Arthas支持使用管道对上述命令的结果进行进一步的处理，如`s
 通过websocket连接Arthas。
 
 * [Web Console](web-console.md)
+
+## 用户数据回报
+
+在`3.1.4`版本后，增加了用户数据回报功能，方便统一做安全或者历史数据统计。
+
+在启动时，指定`stat-url`，就会回报执行的每一行命令，比如： `./as.sh --stat-url 'http://192.168.10.11:8080/api/stat'`
+
+在tunnel server里有一个示例的回报代码，用户可以自己在服务器上实现。
+
+[StatController.java](https://github.com/alibaba/arthas/blob/master/tunnel-server/src/main/java/com/alibaba/arthas/tunnel/server/app/web/StatController.java)
+
 
 ## 其他特性
 

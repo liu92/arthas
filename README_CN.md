@@ -23,6 +23,7 @@ English version goes [here](README.md).
 0. 线上遇到某个用户的数据处理有问题，但线上同样无法 debug，线下无法重现！
 0. 是否有一个全局视角来查看系统的运行状况？
 0. 有什么办法可以监控到JVM的实时运行状态？
+0. 怎么快速定位应用的热点，生成火焰图？
 
 `Arthas`支持JDK 6+，支持Linux/Mac/Windows，采用命令行交互模式，同时提供丰富的 `Tab` 自动补全功能，进一步方便进行问题的定位和诊断。
 
@@ -39,7 +40,7 @@ English version goes [here](README.md).
 下载`arthas-boot.jar`，然后用`java -jar`的方式启动：
 
 ```bash
-wget https://alibaba.github.io/arthas/arthas-boot.jar
+curl -O https://alibaba.github.io/arthas/arthas-boot.jar
 java -jar arthas-boot.jar
 ```
 
@@ -70,14 +71,16 @@ curl -L https://alibaba.github.io/arthas/install.sh | sh
 * [在线教程(推荐)](https://alibaba.github.io/arthas/arthas-tutorials?language=cn)
 * [用户文档](https://alibaba.github.io/arthas/)
 * [安装](https://alibaba.github.io/arthas/install-detail.html)
+* [下载](https://alibaba.github.io/arthas/download.html)
 * [快速入门](https://alibaba.github.io/arthas/quick-start.html)
 * [进阶使用](https://alibaba.github.io/arthas/advanced-use.html)
 * [命令列表](https://alibaba.github.io/arthas/commands.html)
+* [WebConsole](https://alibaba.github.io/arthas/web-console.html)
 * [Docker](https://alibaba.github.io/arthas/docker.html)
 * [用户案例](https://github.com/alibaba/arthas/issues?q=label%3Auser-case)
 * [常见问题](https://github.com/alibaba/arthas/issues?utf8=%E2%9C%93&q=label%3Aquestion-answered+)
-* [参与贡献](https://github.com/alibaba/arthas/blob/master/CONTRIBUTING.md)
-* [Release Notes](https://alibaba.github.io/arthas/release-notes.html)
+* [编译调试/参与贡献](https://github.com/alibaba/arthas/blob/master/CONTRIBUTING.md)
+* [Release Notes](https://github.com/alibaba/arthas/releases)
 * [QQ群/钉钉群](https://alibaba.github.io/arthas/contact-us.html)
 
 Gitee文档镜像： https://arthas.gitee.io/
@@ -91,6 +94,8 @@ Gitee文档镜像： https://arthas.gitee.io/
 ![dashboard](site/src/site/sphinx/_static/dashboard.png)
 
 #### Thread
+
+* https://alibaba.github.io/arthas/thread
 
 一目了然的了解系统的状态，哪些线程比较占cpu？他们到底在做什么？
 
@@ -122,6 +127,8 @@ $ thread -n 3
 ```
 
 #### jad
+
+* https://alibaba.github.io/arthas/jad
 
 对类进行反编译:
 
@@ -161,6 +168,7 @@ public interface Servlet {
 ```
 
 #### mc
+* https://alibaba.github.io/arthas/mc
 
 Memory Compiler/内存编译器，编译`.java`文件生成`.class`。
 
@@ -169,6 +177,7 @@ mc /tmp/Test.java
 ```
 
 #### redefine
+* https://alibaba.github.io/arthas/redefine
 
 加载外部的`.class`文件，redefine jvm已加载的类。
 
@@ -178,6 +187,7 @@ redefine -c 327a647b /tmp/Test.class /tmp/Test\$Inner.class
 ```
 
 #### sc
+* https://alibaba.github.io/arthas/sc
 
 查找JVM中已经加载的类
 
@@ -215,6 +225,8 @@ $ sc -d org.springframework.web.context.support.XmlWebApplicationContext
 
 #### stack
 
+* https://alibaba.github.io/arthas/stack
+
 查看方法 `test.arthas.TestStack#doGet` 的调用堆栈：
 
 ```bash
@@ -250,11 +262,15 @@ ts=2018-09-18 10:11:45;thread_name=http-bio-8080-exec-10;id=d9;is_daemon=true;pr
 
 #### Trace
 
+* https://alibaba.github.io/arthas/trace
+
 观察方法执行的时候哪个子调用比较慢:
 
 ![trace](site/src/site/sphinx/_static/trace.png)
 
 #### Watch
+
+* https://alibaba.github.io/arthas/watch
 
 观察方法 `test.arthas.TestWatch#doGet` 执行的入参，仅当方法抛出异常时才输出。
 
@@ -269,6 +285,8 @@ ts=2018-09-18 10:26:28;result=@ArrayList[
 ```
 
 #### Monitor
+
+* https://alibaba.github.io/arthas/monitor
 
 监控某个特殊方法的调用统计数据，包括总调用次数，平均rt，成功率等信息，每隔5秒输出一次。
 
@@ -292,6 +310,8 @@ Affect(class-cnt:1 , method-cnt:1) cost in 109 ms.
 
 #### Time Tunnel(tt)
 
+* https://alibaba.github.io/arthas/tt
+
 记录方法调用信息，支持事后查看方法调用的参数，返回值，抛出的异常等信息，仿佛穿越时空隧道回到调用现场一般。
 
 ```bash
@@ -312,6 +332,8 @@ Affect(class-cnt:1 , method-cnt:1) cost in 75 ms.
 ```
 
 #### Classloader
+
+* https://alibaba.github.io/arthas/classloader
 
 了解当前系统中有多少类加载器，以及每个加载器加载的类数量，帮助您判断是否有类加载器泄露。
 
@@ -336,6 +358,24 @@ $ classloader
 
 ![web console](site/src/site/sphinx/_static/web-console-local.png)
 
+#### Profiler/FlameGraph/火焰图
+
+* https://alibaba.github.io/arthas/profiler
+
+```bash
+$ profiler start
+Started [cpu] profiling
+```
+
+```
+$ profiler stop
+profiler output file: /tmp/demo/arthas-output/20191125-135546.svg
+OK
+```
+
+通过浏览器查看profiler结果：
+
+![](site/src/site/sphinx/_static/arthas-output-svg.jpg)
 
 ### Known Users
 
@@ -415,6 +455,41 @@ $ classloader
 ![贝壳找房](static/ke.png)
 ![嘟嘟牛](static/dodonew.png)
 ![云幂信息](static/yunmixinxi.png)
+![随手科技](static/sui.png)
+![妈妈去哪儿](static/mamaqunaer.jpg)
+![云实信息](static/realscloud.png)
+![BBD数联铭品](static/bbdservice.png)
+![伙伴集团](static/zhaoshang800.png)
+![数梦工场](static/dtdream.png)
+![安恒信息](static/dbappsecurity.png)
+![亚信科技](static/asiainfo.png)
+![云舒写](static/yunshuxie.png)
+![微住](static/iweizhu.png)
+![月亮小屋](static/bluemoon.png)
+![大搜车](static/souche.png)
+![今日图书](static/jinritushu.png)
+![竹间智能](static/emotibot.png)
+![数字认证](static/bjca.png)
+![360金融](static/360jinrong.png)
+![安居客](static/anjuke.jpg)
+![qunar](static/qunar.png)
+![ctrip](static/ctrip.png)
+![途牛](static/tuniu.png)
+![多点](static/dmall.jpg)
+![转转](static/zhuanzhuan.jpg)
+![金蝶](static/kingdee.jpg)
+![华清飞扬](static/sincetimes.jpg)
+![神奇视角](static/fasterar.jpg)
+![南京昂克软件](static/angke.jpg)
+![网盛生意宝](static/netsun.jpg)
+![北京登云美业网络](static/idengyun.jpg)
+![Holder](static/holder.png)
+
+
+### 洐生项目
+
+* [Bistoury: 一个集成了Arthas的项目](https://github.com/qunarcorp/bistoury)
+* [一个使用MVEL脚本的fork](https://github.com/XhinLiang/arthas)
 
 ### Credit
 
@@ -432,6 +507,7 @@ $ classloader
 * [cli](https://github.com/eclipse-vertx/vert.x/tree/master/src/main/java/io/vertx/core/cli): Arthas的命令行界面基于vert.x提供的cli库进行开发，感谢vert.x在这方面做的优秀工作。
 * [compiler](https://github.com/skalogs/SkaETL/tree/master/compiler) Arthas里的内存编绎器代码来源
 * [Apache Commons Net](https://commons.apache.org/proper/commons-net/) Arthas里的Telnet Client代码来源
+* [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) Arthas's profielr 命令.
 
 ### 仓库镜像
 

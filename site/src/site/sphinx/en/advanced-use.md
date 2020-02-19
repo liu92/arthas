@@ -6,13 +6,15 @@ Advanced Usage
 * help - display Arthas help
 * cls - clear the screen
 * [cat](cat.md) - Concatenate and print files
+* [grep](grep.md) - Pattern searcher
+* [tee](tee.md) - Copies standard input to standard output, making a copy in zero or more files.
 * [pwd](pwd.md) - Return working directory name
 * session - display current session information
-* [reset](reset.md) - reset all the enhanced classes. All enhanced classes will also be reset when Arthas server is closed by `shutdown`
+* [reset](reset.md) - reset all the enhanced classes. All enhanced classes will also be reset when Arthas server is closed by `stop`
 * version - print the version for the Arthas attached to the current Java process
 * history - view command history
 * quit/exit - exit the current Arthas session, without effecting other sessions
-* shutdown - terminate the Arthas server, all Arthas sessions will be destroyed
+* stop - terminate the Arthas server, all Arthas sessions will be destroyed
 * [keymap](keymap.md) - keymap for Arthas keyboard shortcut
 
 ## JVM
@@ -22,9 +24,13 @@ Advanced Usage
 * [jvm](jvm.md) - show JVM information
 * [sysprop](sysprop.md) - view/modify system properties
 * [sysenv](sysenv.md) — view system environment variables
+* [vmoption](vmoption.md) - view/modify the vm diagnostic options.
+* [perfcounter](perfcounter.md) - show JVM Perf Counter information
+* [logger](logger.md) - print the logger information, update the logger level
 * [getstatic](getstatic.md) - examine class's static properties
-* **New!** [ognl](ognl.md) - execute ongl expression
-* **New!** [mbean](mbean.md) - show Mbean information
+* [ognl](ognl.md) - execute ongl expression
+* [mbean](mbean.md) - show Mbean information
+* [heapdump](heapdump.md) - dump java heap in hprof binary format, like `jmap`
 
 ## class/classloader
 
@@ -38,7 +44,7 @@ Advanced Usage
 
 ## monitor/watch/trace - related
 
-> **Attention**: commands here are taking advantage of byte-code-injection, which means we are injecting some [aspects](https://en.wikipedia.org/wiki/Aspect-oriented_programming) into the current classes for monitoring and statistics purpose. Therefore when use it for online troubleshooting in your production environment, you'd better **explicitly specify** classes/methods/criteria, and remember to remove the injected code by `shutdown` or `reset`. 
+> **Attention**: commands here are taking advantage of byte-code-injection, which means we are injecting some [aspects](https://en.wikipedia.org/wiki/Aspect-oriented_programming) into the current classes for monitoring and statistics purpose. Therefore when use it for online troubleshooting in your production environment, you'd better **explicitly specify** classes/methods/criteria, and remember to remove the injected code by `stop` or `reset`. 
 
 * [monitor](monitor.md) - monitor method execution statistics
 * [watch](watch.md) - display the input/output parameter, return object, and thrown exception of specified method invocation
@@ -50,6 +56,10 @@ Advanced Usage
 
 * [options](options.md) - check/set Arthas global options
 
+
+## profiler/flame graph
+
+* [profiler](profiler.md) - use [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) to generate flame graph
 
 ## pipe
 
@@ -74,6 +84,16 @@ Arthas provides `pipe` to process the result returned from commands further, e.g
 Arthas supports living inside a browser. The communication between arthas and browser is via websocket.
 
 * [Web Console](web-console.md)
+
+## User data report
+
+After the `3.1.4` version, arthas support user data report.
+
+At startup, use the `stat-url` option, such as: `./as.sh --stat-url 'http://192.168.10.11:8080/api/stat'`
+
+There is a sample data report in the tunnel server that users can implement on their own.
+
+[StatController.java](https://github.com/alibaba/arthas/blob/master/tunnel-server/src/main/java/com/alibaba/arthas/tunnel/server/app/web/StatController.java)
 
 ## Other features
 

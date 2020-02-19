@@ -19,7 +19,6 @@ import com.taobao.arthas.core.shell.system.JobController;
 import com.taobao.arthas.core.shell.system.impl.InternalCommandManager;
 import com.taobao.arthas.core.shell.system.impl.JobControllerImpl;
 import com.taobao.arthas.core.shell.term.Term;
-import com.taobao.arthas.core.util.Constants;
 import com.taobao.arthas.core.util.LogUtil;
 import com.taobao.middleware.logger.Logger;
 
@@ -46,9 +45,10 @@ public class ShellImpl implements Shell {
     private Term term;
     private String welcome;
     private Job currentForegroundJob;
+    private String prompt;
 
     public ShellImpl(ShellServer server, Term term, InternalCommandManager commandManager,
-            Instrumentation instrumentation, int pid, JobControllerImpl jobController) {
+            Instrumentation instrumentation, long pid, JobControllerImpl jobController) {
         session.put(Session.COMMAND_MANAGER, commandManager);
         session.put(Session.INSTRUMENTATION, instrumentation);
         session.put(Session.PID, pid);
@@ -64,6 +64,8 @@ public class ShellImpl implements Shell {
         if (term != null) {
             term.setSession(session);
         }
+
+        this.setPrompt();
     }
 
     public JobController jobController() {
@@ -106,6 +108,14 @@ public class ShellImpl implements Shell {
         this.welcome = welcome;
     }
 
+    private void setPrompt(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[arthas@");
+        stringBuilder.append(session.getPid());
+        stringBuilder.append("]$ ");
+        this.prompt = stringBuilder.toString();
+    }
+
     public ShellImpl init() {
         term.interruptHandler(new InterruptHandler(this));
         term.suspendHandler(new SuspendHandler(this));
@@ -142,7 +152,7 @@ public class ShellImpl implements Shell {
     }
 
     public void readline() {
-        term.readline(Constants.DEFAULT_PROMPT, new ShellLineHandler(this),
+        term.readline(prompt, new ShellLineHandler(this),
                 new CommandManagerCompletionHandler(commandManager));
     }
 

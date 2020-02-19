@@ -21,6 +21,9 @@ matrix:
 #      - ZULUJDK=6
 
 before_install:
+  # installing the rpm package 
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq rpm
   # adding $HOME/.sdkman to cache would create an empty directory, which interferes with the initial installation
   - "[[ -d $HOME/.sdkman/bin/ ]] || rm -rf $HOME/.sdkman/"
   - curl -sL https://get.sdkman.io | bash
@@ -38,7 +41,7 @@ cache:
 
 script:
   - ./mvnw -version
-  - ./mvnw clean package -P full -Dsphinx.binUrl=https://github.com/hengyunabc/sphinx-binary/releases/download/v0.4.0.1/sphinx.linux-x86_64
+  - ./mvnw clean package -P full
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
@@ -54,6 +57,8 @@ deploy:
   file:
     - "packaging/target/*.zip"
     - "packaging/target/*.deb"
+    - "packaging/target/*.rpm"
+    - "tunnel-server/target/*.jar"
   skip_cleanup: true
   on:
     tags: true
