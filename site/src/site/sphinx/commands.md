@@ -22,6 +22,7 @@
 * [jad](jad.md)
 * [classloader](classloader.md)
 * [mc](mc.md)
+* [retransform](retransform.md)
 * [redefine](redefine.md)
 
 * [monitor](monitor.md)
@@ -33,9 +34,12 @@
 * [profiler](profiler.md)
 
 * [cat](cat.md)
+* [echo](echo.md)
 * [grep](grep.md)
+* [base64](base64.md)
 * [tee](tee.md)
 * [pwd](pwd.md)
+* [auth](auth.md)
 * [options](options.md)
 
 ### Arthas 基础命令
